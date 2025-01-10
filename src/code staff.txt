@@ -1,0 +1,17 @@
+pg.NOFRAME
+
+win32gui.SetWindowLong(hwnd, win32con.GWL_EXSTYLE, win32gui.GetWindowLong(hwnd, win32con.GWL_EXSTYLE) | win32con.WS_EX_LAYERED)
+win32gui.SetLayeredWindowAttributes(hwnd, win32api.RGB(0, 0, 0), 0, win32con.LWA_COLORKEY)
+win32gui.SetWindowPos(hwnd, win32con.HWND_TOP, 300+int(150*math.sin(time.time()*2)), 300+int(150*math.cos(time.time()*2)), 300, 300, win32con.SWP_SHOWWINDOW)
+
+try:
+	x/y
+	log.info(f"x/y successful with result: {x/y}.")
+except ZeroDivisionError as err:
+	log.exception("ZeroDivisionError")
+
+logging.debug("A DEBUG Message")
+logging.info("An INFO")
+logging.warning("A WARNING")
+logging.error("An ERROR")
+logging.critical("A message of CRITICAL severity")
