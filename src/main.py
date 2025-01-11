@@ -9,13 +9,29 @@ import sys
 import win32gui
 import win32con
 import win32api
-from logging import basicConfig, INFO, debug, info, warning, error, critical
+import logging
+from logging.handlers import RotatingFileHandler
 
-from components.utils import *
-from components.gui import *
+from components import *
 
-basicConfig(level=INFO, filename="Nyxora.log",filemode="w", format="%(asctime)s %(levelname)s %(message)s")
-info("lol")
+log = logging.getLogger("main")
+log.setLevel(logging.DEBUG)
+
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+
+file_handler = RotatingFileHandler('Nyxora.log', maxBytes=1048576, backupCount=5)
+file_handler.setLevel(logging.INFO)
+
+formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s %(message)s')
+console_handler.setFormatter(formatter)
+file_handler.setFormatter(formatter)
+
+log.addHandler(console_handler)
+log.addHandler(file_handler)
+
+log.info("log started")
+
 FPS = 60
 
 if __name__ == "__main__":
@@ -25,13 +41,14 @@ if __name__ == "__main__":
 	sc_info = pg.display.Info()
 	sc_w = sc_info.current_w
 	sc_h = sc_info.current_h
-
-	info(f"SC size {sc_w}x{sc_h}")
+	log.error("pzdc")
+	log.info(f"SC size {sc_w}x{sc_h}")
 
 	win_w = sc_w // 2
 	win_h = sc_h // 2
 
 	sc = pg.display.set_mode((win_w, win_h), pg.RESIZABLE)
+	log.info(f"window size {win_w}x{win_h}")
 	pg.display.set_caption("Nyxora")
 	hwnd = pg.display.get_wm_info()["window"]
 	clock = pg.time.Clock()
@@ -55,6 +72,7 @@ if __name__ == "__main__":
 
 		pg.display.flip()
 		frames += 1
+		
 
 		clock.tick(FPS)
 
