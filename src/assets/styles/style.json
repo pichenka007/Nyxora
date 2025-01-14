@@ -1,0 +1,19 @@
+{
+	"defaults": {
+		"colours": {
+			"normal_bg": "#000000"
+		}
+	},
+	"auto_resizing_container": {
+		"colours": {
+			"normal_bg": "#FF0000",
+			"hovered_bg": "#FF7A7A",
+			"disabled_bg": "#AAAAAA"
+		},
+        "misc": {
+            "shape": "rectangle",
+            "border_width": 5,
+            "border_color": "#FF0000"
+        }
+	}
+}
