@@ -12,10 +12,13 @@ import win32con
 import win32api
 import logging
 from logging.handlers import RotatingFileHandler
-
+import numpy as np
 
 import components.nyxor_utils as utils
 import components.nyxor_gui as gui
+
+
+FPS = 60
 
 
 log = logging.getLogger("main")
@@ -47,7 +50,7 @@ def main():
 	win_w = sc_w // 2
 	win_h = sc_h // 2
 
-	sc = pg.display.set_mode((win_w, win_h), pg.RESIZABLE|pg.SRCALPHA)
+	sc = pg.display.set_mode((win_w, win_h), pg.RESIZABLE|pg.SRCALPHA) #pg.FULLSCREEN|
 
 	log.info(f"window size {win_w}x{win_h}")
 
@@ -74,15 +77,17 @@ def main():
 			if event.type == pg.QUIT:
 				utils.close(0)
 			if event.type == pg.VIDEORESIZE:
-				sc = pg.display.set_mode((max(event.w, 120), max(event.h, 100)), pg.RESIZABLE|pg.SRCALPHA)
-				gui.init(max(event.w, 120), max(event.h, 100), sc_w, sc_h)
-				gui.manager.set_window_resolution((max(event.w, 120), max(event.h, 100)))
+				win_w, win_h = (max(event.w, sc_w // 2), max(event.h, sc_h // 2))
+				sc = pg.display.set_mode((win_w, win_h), pg.RESIZABLE|pg.SRCALPHA)
+				gui.init(win_w, win_h, sc_w, sc_h)
+				gui.manager.set_window_resolution((win_w, win_h))
+				#gui.manager.rebuild_all_from_changed_theme_data()
 			gui.manager.process_events(event)
 
 
 		sc.fill((0, 0, 0))
-		gui.update(time.time()-delta_time, sc)
 
+		gui.update(time.time()-delta_time, sc)
 
 		pg.display.flip()
 		frames += 1
@@ -90,14 +95,11 @@ def main():
 		clock.tick(FPS)
 		delta_time = time.time()
 
-	print(frames)
+		pg.display.set_caption(str(int(clock.get_fps())))
 
 
 
-FPS = 60
+
 
 if __name__ == "__main__":
 	main()
-
-
-
